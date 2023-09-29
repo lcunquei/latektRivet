@@ -1,0 +1,176 @@
+// -*- C++ -*-
+#include "Rivet/Analysis.hh"
+#include "Rivet/Projections/FinalState.hh"
+#include "Rivet/Projections/FastJets.hh"
+#include "Rivet/Projections/DressedLeptons.hh"
+#include "Rivet/Projections/MissingMomentum.hh"
+#include "Rivet/Projections/PromptFinalState.hh"
+
+#include "Rivet/Analysis.hh"
+#include "Rivet/Projections/FastJets.hh"
+#include "Rivet/Projections/VetoedFinalState.hh"
+#include "Rivet/Projections/ChargedFinalState.hh"
+
+#include "fastjet/JetDefinition.hh"
+#include "fastjet/ClusterSequence.hh"
+#include "fastjet/contrib/LundGenerator.hh"
+
+
+namespace Rivet {
+
+
+  /// @brief Add a short analysis description here
+  class CMS_2023_xxx : public Analysis {
+  public:
+
+    /// Constructor
+    DEFAULT_RIVET_ANALYSIS_CTOR(CMS_2023_xxx);
+
+
+    void init() {
+
+      //Projections
+      FinalState fs(Cuts::abseta < 5.2);
+      
+      FastJets jet2(fs, FastJets::ANTIKT, 0.2); 
+      declare(jet2, "jet2");
+
+      // Particles for the jets                                                                                                          
+      VetoedFinalState jet_input(fs);
+      jet_input.vetoNeutrinos();  //in CMS we only veto neutrinos
+      declare(jet_input, "JET_INPUT");     
+
+
+      book(_njets, "_njets");
+      book(_h1,"_h1",{1.000,1.600,2.000,2.300,2.550,2.800,3.000,5.000});
+
+
+
+
+    }
+
+    void analyze(const Event& event) {
+      const int flaghf=1; //change to zero if you run inclusive 
+      const double weight = event.weights()[0];
+      // Convert Particles into PseudoJets for clustering                                                                                                                                                                            
+      const VetoedFinalState & fs = apply<VetoedFinalState>(event, "JET_INPUT");
+      const Particles & fsParticles = fs.particles();
+      vector<PseudoJet> particles;
+      particles.reserve(fsParticles.size());
+      for (uint iFS=0; iFS<fsParticles.size(); iFS++)
+	{
+	  PseudoJet p = fsParticles[iFS].pseudojet();
+	  p.set_user_index(fsParticles[iFS].pid()); 
+	  if(fsParticles[iFS].pid()==421) cout<<" "<<weight<<" "<<fsParticles[iFS].pid()<<endl;
+	  particles.push_back(p);
+	}
+
+
+     
+      JetDefinition jetDefAKT_Sig(fastjet::antikt_algorithm, 0.2); 
+      ClusterSequence antikTjets(particles, jetDefAKT_Sig);
+      vector<PseudoJet> jets = fastjet::sorted_by_pt(antikTjets.inclusive_jets(100));
+
+     
+
+      //if (jets.size() < 1)  vetoEvent; // at least 1 jet
+      //if (jets[0].pt() < 700*GeV)  vetoEvent; // at least 1 jet with pT > 700 GeV
+    
+      _njets->fill(jets.size()); // for normalization
+      
+
+
+      for (size_t i = 0; i < jets.size(); ++i ) //loop over all jets
+	{
+	  if ( fabs(jets[i].rapidity())  > 2.1 ) continue;
+	  if (jets[i].pt() < 100*GeV) continue;
+	  if (jets[i].pt() > 120*GeV) continue;
+	  PseudoJet jet1 = jets[i];
+          int flagtag=0;
+	  vector<PseudoJet> constits_ch;
+         
+	  for(uint m=0;m<jet1.constituents().size();m++){
+	    if(flaghf==1){
+	    if( jet1.constituents()[m].user_index() == 421 && jet1.constituents()[m].pt()>=4 && fabs(jet1.constituents()[m].rapidity())<=1.2){
+              flagtag=1; 
+	      break;}
+
+	  if(flagtag==0) continue; //send to declustering only jets with a D0 with pT>4 GeV and Do.y<1.2
+	    } }
+
+	  for(uint m=0;m<jet1.constituents().size();m++){
+	    constits_ch.push_back(jet1.constituents()[m]);}
+	    
+	  JetDefinition tjet1_def(fastjet::cambridge_algorithm, 10); 
+	  ClusterSequence tjet1_cs(constits_ch, tjet1_def);
+	  vector<PseudoJet> tjets1 = fastjet::sorted_by_pt(tjet1_cs.inclusive_jets(0.0));
+
+	  if (tjets1.size() < 1) continue;
+          
+	  PseudoJet jj = tjets1[0];
+	  PseudoJet j1;  // subjet 1 (largest pt)
+	  PseudoJet j2;  // subjet 2 (smaller pt)
+          double rg=0;
+          int flagsubjet=0;
+	  // Unclustering jet
+	  while(jj.has_parents(j1,j2)){
+
+	    flagsubjet=0;
+	    if(j1.perp() < j2.perp()) std::swap(j1,j2);
+	    vector <PseudoJet> constitj1 = sorted_by_pt(j1.constituents());
+	    
+	    for(uint m=0;m<constitj1.size();m++){
+	      if(constitj1[m].user_index()==421) flagsubjet=1;
+            }
+
+	    
+	    double delta_R = j1.delta_R(j2);
+	    double cut=1;
+	    
+	    double kt= j2.perp()*delta_R;
+	    
+
+	    if(kt>cut) {
+             	  
+    
+	     rg = delta_R;
+	      
+
+	    }
+          
+	    jj=j1;
+	  }
+          double xax=0;
+	  if(rg==0) xax=1.25;
+          else xax=log(1/rg);
+          if(flaghf==0 || (flaghf==1&&flagsubjet==1)) _h1->fill(xax);
+
+
+
+
+	 
+
+	}
+    }
+
+
+    void finalize() {
+
+      double area = _njets->sumW();
+     
+      //scale(_h, 1/a); //make it per-jet
+      
+
+    }
+
+  private:
+
+    Histo1DPtr _h1;
+    CounterPtr _njets;
+  };
+
+
+
+  DECLARE_RIVET_PLUGIN(CMS_2023_xxx);
+
+}

@@ -30,3 +30,30 @@ Rivet already provides us with a database of Rivet routines, you can check these
 rivet --list-analyses
 
 Many published analyses (typically cross section measurements) have their rivet subroutine in that database, you can see them online as well here: https://rivet.hepforge.org/analyses.html 
+
+
+
+To run latekt rivet routine: 
+First place CMS_2023_xxx.cc  in RIVET/SMP/src
+Then place runRivetAnalyzer_DIJET_13TeV_DjetsLatekt_cfg.py in RIVET/SMP/test
+compile the code again with scram build -j8
+then do cmsRun runRivetAnalyzer_DIJET_13TeV_DjetsLatekt_cfg.py
+
+This will generate pythia events for which the D0s, B0s and B+s are stable particles. The D0s are set stable because those are the particles that we reconstruct. 
+The B0s and the B+s are made stable because in our analysis we correct for non-prompt decays. The output is of the .yoda type, you havre to convert it to root by doing yoda2root file.yoda file.root
+If instead we run runRivetAnalyzer_DIJET_13TeV_inclusiveLatekt_cfg.py, then we'll run latkT in inclusively, and for that we need to change the flaghf to zero in CMS_2023_xxx.cc
+To run on the grid you can use crab_myMC.py. You'll then have to transform the output from .yoda to .root and merge. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

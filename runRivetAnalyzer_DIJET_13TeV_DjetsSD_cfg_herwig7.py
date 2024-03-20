@@ -214,7 +214,7 @@ process.rivetAnalyzer.UseExternalWeight = cms.bool(True)  # for weighted events
 process.rivetAnalyzer.useGENweights = cms.bool(True)
 process.rivetAnalyzer.useLHEweights = cms.bool(False)  # doesn't matter as no separate LHE generator
 
-process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_sd_xxx')
 
 ## Substructure
 ## CMS_2018_PAS_SMP_18_QGX_ZPJ

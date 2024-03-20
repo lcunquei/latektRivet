@@ -18,7 +18,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(2000)
+    input = cms.untracked.int32(100000)
 )
 
 # Input source
@@ -122,7 +122,9 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
                 pythia8CP5SettingsBlock, 
                 processParameters = cms.vstring(
                         ## switch on for DIJET
-                         'HardQCD:all = on',
+                        ## 'HardQCD:all = on',
+                           'HardQCD:gg2qqbar = on',
+                           'HardQCD:qq2qq = on',
                         ## switch on for ZPJ
                         # 'WeakBosonAndParton:qqbar2gmZg = on', 
                         # 'WeakBosonAndParton:qg2gmZq = on',    
@@ -188,7 +190,7 @@ process.load('GeneratorInterface.RivetInterface.rivetAnalyzer_cfi')
 
 def customise(process):
 	process.load('GeneratorInterface.RivetInterface.rivetAnalyzer_cfi')
-        process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+        process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_sd_xxx')
 	process.rivetAnalyzer.CrossSection = cms.double(4.956e+09)
         process.rivetAnalyzer.OutputFile = cms.string('QCD_Pythia8_CP5_Mar16.yoda')
 	process.rivetAnalyzer.UseExternalWeight = cms.bool(True)

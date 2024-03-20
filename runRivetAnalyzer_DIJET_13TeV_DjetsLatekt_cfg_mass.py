@@ -18,7 +18,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(30000)
+    input = cms.untracked.int32(50000)
 )
 
 # Input source
@@ -102,6 +102,7 @@ pythia8CP5SettingsBlock = cms.PSet(
         'SigmaTotal:sigmaEl = 21.89',
         'SigmaTotal:sigmaTot = 100.309',
         'PDF:pSet=LHAPDF6:NNPDF31_nnlo_as_0118',
+        'TimeShower:nGluonToQuark=3',
         #'TimeShower:scaleGluonToQuark=<__TimeShower:scaleGluonToQuark__>', # 1 Pythia default
         )
 )
@@ -135,6 +136,8 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
                         #'SoftQCD:centralDiffractive = on',
                         #'SoftQCD:doubleDiffractive = on',
                         ## switch on for DIJET and ZPJ
+                         '4:m0=4',
+                         
                          'PhaseSpace:pTHatMin = 80',
                          'PhaseSpace:pTHatMax = 5000',
                          'PhaseSpace:bias2Selection = on',
@@ -188,7 +191,7 @@ process.load('GeneratorInterface.RivetInterface.rivetAnalyzer_cfi')
 
 def customise(process):
 	process.load('GeneratorInterface.RivetInterface.rivetAnalyzer_cfi')
-        process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+        process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx_mass')
 	process.rivetAnalyzer.CrossSection = cms.double(4.956e+09)
         process.rivetAnalyzer.OutputFile = cms.string('QCD_Pythia8_CP5_Mar16.yoda')
 	process.rivetAnalyzer.UseExternalWeight = cms.bool(True)

@@ -146,11 +146,16 @@ process.generator = cms.EDFilter("Herwig7GeneratorFilter",
         'set /Herwig/Cuts/Cuts:X2Min    1e-07',
         'set /Herwig/Cuts/MassCut:MinM  0.0*GeV',
         'set /Herwig/Decays/DecayHandler:MaxLifeTime 10*mm',
-        'set /Herwig/Particles/D0:Stable Stable',
-        'set /Herwig/Particles/B0:Stable Stable',
-        'set /Herwig/Particles/B+:Stable Stable',
+       # 'set /Herwig/Particles/D0:Stable Stable',
+       # 'set /Herwig/Particles/B0:Stable Stable',
+       # 'set /Herwig/Particles/B+:Stable Stable',
         'set /Herwig/Decays/DecayHandler:LifeTimeOption Average',
 #        'set EventHandler:CascadeHandler /Herwig/DipoleShower/DipoleShowerHandler'
+        'set /Herwig/EventHandlers/EventHandler:CascadeHandler /Herwig/DipoleShower/DipoleShowerHandler',
+        'read snippets/DipoleShowerFiveFlavours.in',
+        'cd /Herwig/DipoleShower',
+        'set DipoleShowerHandler:PowhegDecayEmission No'
+
     ),
     parameterSets = cms.vstring('productionParameters'),
     configFiles = cms.vstring(),
@@ -214,7 +219,7 @@ process.rivetAnalyzer.UseExternalWeight = cms.bool(True)  # for weighted events
 process.rivetAnalyzer.useGENweights = cms.bool(True)
 process.rivetAnalyzer.useLHEweights = cms.bool(False)  # doesn't matter as no separate LHE generator
 
-process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_sd_xxx')
 
 ## Substructure
 ## CMS_2018_PAS_SMP_18_QGX_ZPJ

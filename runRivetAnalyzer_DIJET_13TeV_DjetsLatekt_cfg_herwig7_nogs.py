@@ -101,7 +101,7 @@ herwig7CH3SettingsBlock = cms.PSet(
     herwig7CH3AlphaS = cms.vstring(
         'cd /Herwig/Shower',
         'set AlphaQCD:AlphaMZ 0.118',
-        'cd /',
+        'cd /'
         ),
     herwig7CH3MPISettings = cms.vstring(
         'read snippets/SoftModel.in',
@@ -135,6 +135,15 @@ process.generator = cms.EDFilter("Herwig7GeneratorFilter",
         'insert SubProcess:MatrixElements[0] MEQCD2to2',
         'insert SubProcess:Preweights[0] /Herwig/Weights/reweightMinPT',
         'cd /',
+        'cd /Herwig/Shower/',
+        'do SplittingGenerator:DeleteFinalSplitting g->u,ubar; GtoQQbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->d,dbar; GtoQQbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->s,sbar; GtoQQbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->c,cbar; GtoccbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->b,bbar; GtobbbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->t,tbar; GtoQQbarSudakov',
+
+        'cd /', 
         ## ZPJ
         # 'set /Herwig/Cuts/LeptonPairMassCut:MinMass 60.*GeV',
         ## ZPJ ends

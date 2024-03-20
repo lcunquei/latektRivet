@@ -77,31 +77,31 @@ pythia8CommonSettingsBlock = cms.PSet(
 
 pythia8CP5SettingsBlock = cms.PSet(
     pythia8CP5Settings = cms.vstring(
-        'Tune:pp 14',
+        'Tune:pp 5',
         'Tune:ee 7',
-        'MultipartonInteractions:ecmPow=0.03344',
-        'MultipartonInteractions:bProfile=2',
-        'MultipartonInteractions:pT0Ref=1.41',
-        'MultipartonInteractions:coreRadius=0.7634',
-        'MultipartonInteractions:coreFraction=0.63',
-        'ColourReconnection:mode=0', # 0
-        'ColourReconnection:range=5.176',
-        'SigmaTotal:zeroAXB=off',
-        'SpaceShower:alphaSorder=2',
-        'SpaceShower:alphaSvalue=0.118', # 0.118
-        'SigmaProcess:alphaSvalue=0.118',
-        'SigmaProcess:alphaSorder=2',
-        'MultipartonInteractions:alphaSvalue=0.118',
-        'MultipartonInteractions:alphaSorder=2',
-        'TimeShower:alphaSorder=2',
-        'TimeShower:alphaSvalue=0.118', # 0.118
+#        'MultipartonInteractions:ecmPow=0.03344',
+#        'MultipartonInteractions:bProfile=2',
+#        'MultipartonInteractions:pT0Ref=1.41',
+#        'MultipartonInteractions:coreRadius=0.7634',
+#        'MultipartonInteractions:coreFraction=0.63',
+#        'ColourReconnection:mode=0', # 0
+#        'ColourReconnection:range=5.176',
+#        'SigmaTotal:zeroAXB=off',
+#        'SpaceShower:alphaSorder=2',
+#        'SpaceShower:alphaSvalue=0.118', # 0.118
+#        'SigmaProcess:alphaSvalue=0.118',
+#        'SigmaProcess:alphaSorder=2',
+#        'MultipartonInteractions:alphaSvalue=0.118',
+#        'MultipartonInteractions:alphaSorder=2',
+#        'TimeShower:alphaSorder=2',
+#        'TimeShower:alphaSvalue=0.118', # 0.118
 ##  0.118  0.113  0.123
-        'TimeShower:pTmin=0.5', # 0.5 from Monash 2013
+#        'TimeShower:pTmin=0.5', # 0.5 from Monash 2013
 ##  0.5  0.45  0.55  0.2  0.8
-        'SigmaTotal:mode = 0',
-        'SigmaTotal:sigmaEl = 21.89',
-        'SigmaTotal:sigmaTot = 100.309',
-        'PDF:pSet=LHAPDF6:NNPDF31_nnlo_as_0118',
+#        'SigmaTotal:mode = 0',
+#        'SigmaTotal:sigmaEl = 21.89',
+#        'SigmaTotal:sigmaTot = 100.309',
+#        'PDF:pSet=LHAPDF6:NNPDF31_nnlo_as_0118',
         #'TimeShower:scaleGluonToQuark=<__TimeShower:scaleGluonToQuark__>', # 1 Pythia default
         )
 )

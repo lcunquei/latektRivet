@@ -151,6 +151,11 @@ process.generator = cms.EDFilter("Herwig7GeneratorFilter",
         'set /Herwig/Particles/B+:Stable Stable',
         'set /Herwig/Decays/DecayHandler:LifeTimeOption Average',
 #        'set EventHandler:CascadeHandler /Herwig/DipoleShower/DipoleShowerHandler'
+        'set /Herwig/EventHandlers/EventHandler:CascadeHandler /Herwig/DipoleShower/DipoleShowerHandler',
+        'read snippets/DipoleShowerFiveFlavours.in',
+        'cd /Herwig/DipoleShower',
+        'set DipoleShowerHandler:PowhegDecayEmission No'
+
     ),
     parameterSets = cms.vstring('productionParameters'),
     configFiles = cms.vstring(),

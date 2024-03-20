@@ -101,7 +101,7 @@ herwig7CH3SettingsBlock = cms.PSet(
     herwig7CH3AlphaS = cms.vstring(
         'cd /Herwig/Shower',
         'set AlphaQCD:AlphaMZ 0.118',
-        'cd /',
+        'cd /'
         ),
     herwig7CH3MPISettings = cms.vstring(
         'read snippets/SoftModel.in',
@@ -135,6 +135,14 @@ process.generator = cms.EDFilter("Herwig7GeneratorFilter",
         'insert SubProcess:MatrixElements[0] MEQCD2to2',
         'insert SubProcess:Preweights[0] /Herwig/Weights/reweightMinPT',
         'cd /',
+        'cd /Herwig/Shower/',
+        'do SplittingGenerator:DeleteFinalSplitting g->u,ubar; GtoQQbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->d,dbar; GtoQQbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->s,sbar; GtoQQbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->c,cbar; GtoccbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->b,bbar; GtobbbarSudakov',
+        'do SplittingGenerator:DeleteFinalSplitting g->t,tbar; GtoQQbarSudakov',
+        'cd /', 
         ## ZPJ
         # 'set /Herwig/Cuts/LeptonPairMassCut:MinMass 60.*GeV',
         ## ZPJ ends
@@ -151,6 +159,10 @@ process.generator = cms.EDFilter("Herwig7GeneratorFilter",
         'set /Herwig/Particles/B+:Stable Stable',
         'set /Herwig/Decays/DecayHandler:LifeTimeOption Average',
 #        'set EventHandler:CascadeHandler /Herwig/DipoleShower/DipoleShowerHandler'
+        'set /Herwig/EventHandlers/EventHandler:CascadeHandler /Herwig/DipoleShower/DipoleShowerHandler',
+        'read snippets/DipoleShowerFiveFlavours.in',
+        'cd /Herwig/DipoleShower',
+        'set DipoleShowerHandler:PowhegDecayEmission No'
     ),
     parameterSets = cms.vstring('productionParameters'),
     configFiles = cms.vstring(),

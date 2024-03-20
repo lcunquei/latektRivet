@@ -188,7 +188,7 @@ process.load('GeneratorInterface.RivetInterface.rivetAnalyzer_cfi')
 
 def customise(process):
 	process.load('GeneratorInterface.RivetInterface.rivetAnalyzer_cfi')
-        process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+        process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx_ptcut')
 	process.rivetAnalyzer.CrossSection = cms.double(4.956e+09)
         process.rivetAnalyzer.OutputFile = cms.string('QCD_Pythia8_CP5_Mar16.yoda')
 	process.rivetAnalyzer.UseExternalWeight = cms.bool(True)

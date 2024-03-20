@@ -20,11 +20,11 @@ namespace Rivet {
 
 
   /// @brief Add a short analysis description here
-  class CMS_2023_xxx : public Analysis {
+  class CMS_2023_xxx_ptcut : public Analysis {
   public:
 
     /// Constructor
-    DEFAULT_RIVET_ANALYSIS_CTOR(CMS_2023_xxx);
+    DEFAULT_RIVET_ANALYSIS_CTOR(CMS_2023_xxx_ptcut);
 
 
     void init() {
@@ -61,7 +61,7 @@ namespace Rivet {
 	{
 	  PseudoJet p = fsParticles[iFS].pseudojet();
 	  p.set_user_index(fsParticles[iFS].pid()); 
-	 // if(fsParticles[iFS].pid()==421) cout<<" "<<weight<<" "<<fsParticles[iFS].pid()<<endl;
+
 	  particles.push_back(p);
 	}
 
@@ -91,7 +91,7 @@ namespace Rivet {
           if(flaghf==1){         
 	  for(uint m=0;m<jet1.constituents().size();m++){
 	   
-	    if( jet1.constituents()[m].user_index() == 421 && jet1.constituents()[m].pt()>=4 && fabs(jet1.constituents()[m].rapidity())<=1.2){
+	    if( jet1.constituents()[m].user_index() == 421 && jet1.constituents()[m].pt()>=15 && fabs(jet1.constituents()[m].rapidity())<=1.2){
               flagtag=1; 
 	      break;}
 
@@ -124,10 +124,10 @@ namespace Rivet {
 	    
 	    for(uint m=0;m<constitj1.size();m++){
             
-	     	      if(constitj1[m].user_index()==421) flagsubjet=1;
+	      if(constitj1[m].perp()>=4) flagsubjet=1;
             }
 
-	    if(flaghf==0) flagsubjet=1;
+	
 	    double delta_R = j1.delta_R(j2);
 	    double cut=1;
 	    
@@ -175,6 +175,6 @@ namespace Rivet {
 
 
 
-  DECLARE_RIVET_PLUGIN(CMS_2023_xxx);
+  DECLARE_RIVET_PLUGIN(CMS_2023_xxx_ptcut);
 
 }

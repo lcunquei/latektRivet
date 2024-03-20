@@ -20,11 +20,11 @@ namespace Rivet {
 
 
   /// @brief Add a short analysis description here
-  class CMS_2023_xxx : public Analysis {
+  class CMS_2023_sd_xxx : public Analysis {
   public:
 
     /// Constructor
-    DEFAULT_RIVET_ANALYSIS_CTOR(CMS_2023_xxx);
+    DEFAULT_RIVET_ANALYSIS_CTOR(CMS_2023_sd_xxx);
 
 
     void init() {
@@ -61,7 +61,7 @@ namespace Rivet {
 	{
 	  PseudoJet p = fsParticles[iFS].pseudojet();
 	  p.set_user_index(fsParticles[iFS].pid()); 
-	 // if(fsParticles[iFS].pid()==421) cout<<" "<<weight<<" "<<fsParticles[iFS].pid()<<endl;
+	  if(fsParticles[iFS].pid()==421) cout<<" "<<weight<<" "<<fsParticles[iFS].pid()<<endl;
 	  particles.push_back(p);
 	}
 
@@ -88,20 +88,18 @@ namespace Rivet {
 	  PseudoJet jet1 = jets[i];
           int flagtag=0;
 	  vector<PseudoJet> constits_ch;
-          if(flaghf==1){         
+	  if(flaghf==1){
 	  for(uint m=0;m<jet1.constituents().size();m++){
 	   
 	    if( jet1.constituents()[m].user_index() == 421 && jet1.constituents()[m].pt()>=4 && fabs(jet1.constituents()[m].rapidity())<=1.2){
               flagtag=1; 
 	      break;}
-
-	  
 	  }
-	  if(flagtag==0) continue; }
+	  if(flagtag==0) continue; //send to declustering only jets with a D0 with pT>4 GeV and Do.y<1.2
+	  }
 
-        
 	  for(uint m=0;m<jet1.constituents().size();m++){
-	    constits_ch.push_back(jet1.constituents()[m]);}
+	  constits_ch.push_back(jet1.constituents()[m]);}
 	    
 	  JetDefinition tjet1_def(fastjet::cambridge_algorithm, 10); 
 	  ClusterSequence tjet1_cs(constits_ch, tjet1_def);
@@ -114,31 +112,30 @@ namespace Rivet {
 	  PseudoJet j2;  // subjet 2 (smaller pt)
           double rg=0;
           int flagsubjet=0;
+          int flagsd=0;
 	  // Unclustering jet
 	  while(jj.has_parents(j1,j2)){
 
 	    flagsubjet=0;
-           
 	    if(j1.perp() < j2.perp()) std::swap(j1,j2);
 	    vector <PseudoJet> constitj1 = sorted_by_pt(j1.constituents());
 	    
 	    for(uint m=0;m<constitj1.size();m++){
-            
-	     	      if(constitj1[m].user_index()==421) flagsubjet=1;
+	      if(constitj1[m].user_index()==421) flagsubjet=1;
             }
 
-	    if(flaghf==0) flagsubjet=1;
+            if(flaghf==0) flagsubjet=1;	    
 	    double delta_R = j1.delta_R(j2);
 	    double cut=1;
-	    
+	    double zcut=j2.perp()/(j1.perp()+j2.perp());
 	    double kt= j2.perp()*delta_R;
 	    
 
-	    if(kt>cut && flagsubjet==1) {
+	    if(zcut>0.1 && flagsd==0 && flagsubjet==1 && kt>1) {
              	  
     
 	     rg = delta_R;
-	      
+	     flagsd=1; 
 
 	    }
           
@@ -147,7 +144,7 @@ namespace Rivet {
           double xax=0;
 	  if(rg==0) xax=1.25;
           else xax=log(1/rg);
-           _h1->fill(xax);
+          _h1->fill(xax);
 
 
 
@@ -175,6 +172,6 @@ namespace Rivet {
 
 
 
-  DECLARE_RIVET_PLUGIN(CMS_2023_xxx);
+  DECLARE_RIVET_PLUGIN(CMS_2023_sd_xxx);
 
 }

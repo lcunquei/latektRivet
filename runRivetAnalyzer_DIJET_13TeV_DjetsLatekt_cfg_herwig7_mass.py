@@ -27,7 +27,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(200)
+    input = cms.untracked.int32(1000)
 )
 
 # Input source
@@ -79,7 +79,6 @@ herwig7CH3SettingsBlock = cms.PSet(
             'set PDFSet_nnlo:RemnantHandler HadronRemnants',
             'set /Herwig/Particles/p+:PDF PDFSet_nnlo',
             'set /Herwig/Particles/pbar-:PDF PDFSet_nnlo',
-
             'set /Herwig/Partons/PPExtractor:FirstPDF  PDFSet_nnlo',
             'set /Herwig/Partons/PPExtractor:SecondPDF PDFSet_nnlo',
 
@@ -146,6 +145,8 @@ process.generator = cms.EDFilter("Herwig7GeneratorFilter",
         'set /Herwig/Cuts/Cuts:X2Min    1e-07',
         'set /Herwig/Cuts/MassCut:MinM  0.0*GeV',
         'set /Herwig/Decays/DecayHandler:MaxLifeTime 10*mm',
+        'set /Herwig/Particles/c:NominalMass 1.5*GeV',
+        'set /Herwig/Particles/cbar:NominalMass 1.5*GeV', 
         'set /Herwig/Particles/D0:Stable Stable',
         'set /Herwig/Particles/B0:Stable Stable',
         'set /Herwig/Particles/B+:Stable Stable',
@@ -214,7 +215,7 @@ process.rivetAnalyzer.UseExternalWeight = cms.bool(True)  # for weighted events
 process.rivetAnalyzer.useGENweights = cms.bool(True)
 process.rivetAnalyzer.useLHEweights = cms.bool(False)  # doesn't matter as no separate LHE generator
 
-process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx_mass')
 
 ## Substructure
 ## CMS_2018_PAS_SMP_18_QGX_ZPJ

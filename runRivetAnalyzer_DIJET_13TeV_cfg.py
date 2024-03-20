@@ -18,7 +18,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(2000)
+    input = cms.untracked.int32(50000)
 )
 
 # Input source
@@ -68,10 +68,6 @@ pythia8CommonSettingsBlock = cms.PSet(
       'ParticleDecays:limitTau0 = on',
       'ParticleDecays:tau0Max = 10',
       'ParticleDecays:allowPhotonRadiation = on',
-#      '421:mayDecay = off',
-#      '511:mayDecay = off',
-#      '521:mayDecay = off',
-
     )
 )
 
@@ -106,11 +102,8 @@ pythia8CP5SettingsBlock = cms.PSet(
         )
 )
 
-
-
-
 process.generator = cms.EDFilter("Pythia8GeneratorFilter",
-        comEnergy = cms.double(5020.0),
+        comEnergy = cms.double(13000.0),
         crossSection = cms.untracked.double(1.0),
         filterEfficiency = cms.untracked.double(1.0),
         maxEventsToPrint = cms.untracked.int32(1),
@@ -135,12 +128,11 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
                         #'SoftQCD:centralDiffractive = on',
                         #'SoftQCD:doubleDiffractive = on',
                         ## switch on for DIJET and ZPJ
-                         'PhaseSpace:pTHatMin = 80',
-                         'PhaseSpace:pTHatMax = 5000',
+                         'PhaseSpace:pTHatMin = 15',
+                         'PhaseSpace:pTHatMax = 7000',
                          'PhaseSpace:bias2Selection = on',
                          'PhaseSpace:bias2SelectionPow = 4.5',
                          'PhaseSpace:bias2SelectionRef = 15.',
-                        
                 ),
                 parameterSets = cms.vstring('pythia8CommonSettings',
                                             'pythia8CP5Settings', 
@@ -148,23 +140,6 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
                                             )
         )
 )
-
-
-#RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-##    generator = cms.PSet(
-#        initialSeed = cms.untracked.uint32(123456789),
-#        engineName = cms.untracked.string('TRandom3')
-#    )
-#)
-
-process.RandomNumberGeneratorService.generator.engineName = cms.untracked.string('TRandom3')
-process.RandomNumberGeneratorService.generator.initialSeed = cms.untracked.uint32(4)
-
-
-print("Running with seed", process.RandomNumberGeneratorService.generator.initialSeed)
-
-
-
 
 process.ProductionFilterSequence = cms.Sequence(process.generator)
 
@@ -188,7 +163,7 @@ process.load('GeneratorInterface.RivetInterface.rivetAnalyzer_cfi')
 
 def customise(process):
 	process.load('GeneratorInterface.RivetInterface.rivetAnalyzer_cfi')
-        process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+        process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2021_I1920187_DIJET')
 	process.rivetAnalyzer.CrossSection = cms.double(4.956e+09)
         process.rivetAnalyzer.OutputFile = cms.string('QCD_Pythia8_CP5_Mar16.yoda')
 	process.rivetAnalyzer.UseExternalWeight = cms.bool(True)

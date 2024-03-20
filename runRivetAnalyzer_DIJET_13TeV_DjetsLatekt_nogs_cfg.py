@@ -136,7 +136,7 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
                         #'SoftQCD:centralDiffractive = on',
                         #'SoftQCD:doubleDiffractive = on',
                         ## switch on for DIJET and ZPJ
-                         'PhaseSpace:pTHatMin = 15',
+                         'PhaseSpace:pTHatMin = 80',
                          'PhaseSpace:pTHatMax = 5000',
                          'PhaseSpace:bias2Selection = on',
                          'PhaseSpace:bias2SelectionPow = 4.5',

@@ -79,7 +79,8 @@ herwig7CH3SettingsBlock = cms.PSet(
             'set PDFSet_nnlo:RemnantHandler HadronRemnants',
             'set /Herwig/Particles/p+:PDF PDFSet_nnlo',
             'set /Herwig/Particles/pbar-:PDF PDFSet_nnlo',
-
+            'set /Herwig/Particles/c:NominalMass 0.5*GeV',
+            'set /Herwig/Particles/cbar:NominalMass 0.5*GeV',
             'set /Herwig/Partons/PPExtractor:FirstPDF  PDFSet_nnlo',
             'set /Herwig/Partons/PPExtractor:SecondPDF PDFSet_nnlo',
 
@@ -214,7 +215,7 @@ process.rivetAnalyzer.UseExternalWeight = cms.bool(True)  # for weighted events
 process.rivetAnalyzer.useGENweights = cms.bool(True)
 process.rivetAnalyzer.useLHEweights = cms.bool(False)  # doesn't matter as no separate LHE generator
 
-process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_sd_xxx_mass')
 
 ## Substructure
 ## CMS_2018_PAS_SMP_18_QGX_ZPJ

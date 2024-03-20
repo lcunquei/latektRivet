@@ -27,7 +27,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(200)
+    input = cms.untracked.int32(20000)
 )
 
 # Input source
@@ -146,9 +146,9 @@ process.generator = cms.EDFilter("Herwig7GeneratorFilter",
         'set /Herwig/Cuts/Cuts:X2Min    1e-07',
         'set /Herwig/Cuts/MassCut:MinM  0.0*GeV',
         'set /Herwig/Decays/DecayHandler:MaxLifeTime 10*mm',
-        'set /Herwig/Particles/D0:Stable Stable',
-        'set /Herwig/Particles/B0:Stable Stable',
-        'set /Herwig/Particles/B+:Stable Stable',
+     #   'set /Herwig/Particles/D0:Stable Stable',
+     #   'set /Herwig/Particles/B0:Stable Stable',
+     #   'set /Herwig/Particles/B+:Stable Stable',
         'set /Herwig/Decays/DecayHandler:LifeTimeOption Average',
 #        'set EventHandler:CascadeHandler /Herwig/DipoleShower/DipoleShowerHandler'
     ),
@@ -214,7 +214,7 @@ process.rivetAnalyzer.UseExternalWeight = cms.bool(True)  # for weighted events
 process.rivetAnalyzer.useGENweights = cms.bool(True)
 process.rivetAnalyzer.useLHEweights = cms.bool(False)  # doesn't matter as no separate LHE generator
 
-process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx')
+process.rivetAnalyzer.AnalysisNames = cms.vstring('CMS_2023_xxx_ptcut')
 
 ## Substructure
 ## CMS_2018_PAS_SMP_18_QGX_ZPJ

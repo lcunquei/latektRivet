@@ -20,11 +20,11 @@ namespace Rivet {
 
 
   /// @brief Add a short analysis description here
-  class CMS_2023_xxx : public Analysis {
+  class CMS_2023_xxx_mass : public Analysis {
   public:
 
     /// Constructor
-    DEFAULT_RIVET_ANALYSIS_CTOR(CMS_2023_xxx);
+    DEFAULT_RIVET_ANALYSIS_CTOR(CMS_2023_xxx_mass);
 
 
     void init() {
@@ -50,7 +50,7 @@ namespace Rivet {
     }
 
     void analyze(const Event& event) {
-      const int flaghf=0; //change to zero if you run inclusive 
+      const int flaghf=1; //change to zero if you run inclusive 
       const double weight = event.weights()[0];
       // Convert Particles into PseudoJets for clustering                                                                                                                                                                            
       const VetoedFinalState & fs = apply<VetoedFinalState>(event, "JET_INPUT");
@@ -123,8 +123,7 @@ namespace Rivet {
 	    vector <PseudoJet> constitj1 = sorted_by_pt(j1.constituents());
 	    
 	    for(uint m=0;m<constitj1.size();m++){
-            
-	     	      if(constitj1[m].user_index()==421) flagsubjet=1;
+	      if(constitj1[m].user_index()==421) flagsubjet=1;
             }
 
 	    if(flaghf==0) flagsubjet=1;
@@ -175,6 +174,6 @@ namespace Rivet {
 
 
 
-  DECLARE_RIVET_PLUGIN(CMS_2023_xxx);
+  DECLARE_RIVET_PLUGIN(CMS_2023_xxx_mass);
 
 }

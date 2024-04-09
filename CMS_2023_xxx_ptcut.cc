@@ -60,8 +60,9 @@ namespace Rivet {
       for (uint iFS=0; iFS<fsParticles.size(); iFS++)
 	{
 	  PseudoJet p = fsParticles[iFS].pseudojet();
-	  p.set_user_index(fsParticles[iFS].pid()); 
-
+          if(p.perp()<1) continue;
+   	  p.set_user_index(fsParticles[iFS].pid()); 
+	 // if(fsParticles[iFS].pid()==421) cout<<" "<<weight<<" "<<fsParticles[iFS].pid()<<endl;
 	  particles.push_back(p);
 	}
 
@@ -82,7 +83,7 @@ namespace Rivet {
 
       for (size_t i = 0; i < jets.size(); ++i ) //loop over all jets
 	{
-	  if ( fabs(jets[i].rapidity())  > 2.1 ) continue;
+	  if ( fabs(jets[i].eta())  > 1.6 ) continue;
 	  if (jets[i].pt() < 100*GeV) continue;
 	  if (jets[i].pt() > 120*GeV) continue;
 	  PseudoJet jet1 = jets[i];
@@ -91,7 +92,7 @@ namespace Rivet {
           if(flaghf==1){         
 	  for(uint m=0;m<jet1.constituents().size();m++){
 	   
-	    if( jet1.constituents()[m].user_index() == 421 && jet1.constituents()[m].pt()>=15 && fabs(jet1.constituents()[m].rapidity())<=1.2){
+	    if( jet1.constituents()[m].user_index() == 421 && jet1.constituents()[m].pt()>=4 && fabs(jet1.constituents()[m].rapidity())<=1.2){
               flagtag=1; 
 	      break;}
 
@@ -123,11 +124,11 @@ namespace Rivet {
 	    vector <PseudoJet> constitj1 = sorted_by_pt(j1.constituents());
 	    
 	    for(uint m=0;m<constitj1.size();m++){
-            
-	      if(constitj1[m].perp()>=4) flagsubjet=1;
+                                        
+	     	      if(constitj1[m].perp()>=4) flagsubjet=1;
             }
 
-	
+	    //if(flaghf==0) flagsubjet=1;
 	    double delta_R = j1.delta_R(j2);
 	    double cut=1;
 	    

@@ -60,11 +60,8 @@ namespace Rivet {
       for (uint iFS=0; iFS<fsParticles.size(); iFS++)
 	{
 	  PseudoJet p = fsParticles[iFS].pseudojet();
-          if(p.perp()<1) continue;
-          p.set_user_index(1);
-          if(fsParticles[iFS].pid()==421){if(fsParticles[iFS].fromBottom()==false){
-	      p.set_user_index(fsParticles[iFS].pid());}} 
-	 
+	  p.set_user_index(fsParticles[iFS].pid()); 
+	  //if(fsParticles[iFS].pid()==421) cout<<" "<<weight<<" "<<fsParticles[iFS].pid()<<endl;
 	  particles.push_back(p);
 	}
 
@@ -85,24 +82,22 @@ namespace Rivet {
 
       for (size_t i = 0; i < jets.size(); ++i ) //loop over all jets
 	{
-	  if ( fabs(jets[i].eta())  > 1.6 ) continue;
+	  if ( fabs(jets[i].rapidity())  > 2.1 ) continue;
 	  if (jets[i].pt() < 100*GeV) continue;
 	  if (jets[i].pt() > 120*GeV) continue;
 	  PseudoJet jet1 = jets[i];
           int flagtag=0;
 	  vector<PseudoJet> constits_ch;
-          if(flaghf==1){         
+         
 	  for(uint m=0;m<jet1.constituents().size();m++){
-	   
+	    if(flaghf==1){
 	    if( jet1.constituents()[m].user_index() == 421 && jet1.constituents()[m].pt()>=4 && fabs(jet1.constituents()[m].rapidity())<=1.2){
               flagtag=1; 
-	      break;}
+	      break;}}
 
-	  
+	  if(flagtag==0) continue; //send to declustering only jets with a D0 with pT>4 GeV and Do.y<1.2
 	  }
-	  if(flagtag==0) continue; }
 
-        
 	  for(uint m=0;m<jet1.constituents().size();m++){
 	    constits_ch.push_back(jet1.constituents()[m]);}
 	    
@@ -121,23 +116,21 @@ namespace Rivet {
 	  while(jj.has_parents(j1,j2)){
 
 	    flagsubjet=0;
-           
 	    if(j1.perp() < j2.perp()) std::swap(j1,j2);
 	    vector <PseudoJet> constitj1 = sorted_by_pt(j1.constituents());
 	    
 	    for(uint m=0;m<constitj1.size();m++){
-            
-	     	      if(constitj1[m].user_index()==421) flagsubjet=1;
+	      if(constitj1[m].user_index()==421) flagsubjet=1;
             }
 
-	    if(flaghf==0) flagsubjet=1;
+	    
 	    double delta_R = j1.delta_R(j2);
 	    double cut=1;
 	    
 	    double kt= j2.perp()*delta_R;
 	    
 
-	    if(kt>cut && flagsubjet==1) {
+	    if(kt>cut) {
              	  
     
 	     rg = delta_R;
@@ -150,7 +143,7 @@ namespace Rivet {
           double xax=0;
 	  if(rg==0) xax=1.25;
           else xax=log(1/rg);
-           _h1->fill(xax);
+          if(flaghf==0 || (flaghf==1&&flagsubjet==1)) _h1->fill(xax);
 
 
 

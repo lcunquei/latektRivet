@@ -50,7 +50,7 @@ namespace Rivet {
     }
 
     void analyze(const Event& event) {
-      const int flaghf=1; //change to zero if you run inclusive 
+      const int flaghf=0; //change to zero if you run inclusive 
       const double weight = event.weights()[0];
       // Convert Particles into PseudoJets for clustering                                                                                                                                                                            
       const VetoedFinalState & fs = apply<VetoedFinalState>(event, "JET_INPUT");
@@ -61,10 +61,8 @@ namespace Rivet {
 	{
 	  PseudoJet p = fsParticles[iFS].pseudojet();
           if(p.perp()<1) continue;
-          p.set_user_index(1);
-          if(fsParticles[iFS].pid()==421){if(fsParticles[iFS].fromBottom()==false){
-	      p.set_user_index(fsParticles[iFS].pid());}} 
-	 
+   	  p.set_user_index(fsParticles[iFS].pid()); 
+	 // if(fsParticles[iFS].pid()==421) cout<<" "<<weight<<" "<<fsParticles[iFS].pid()<<endl;
 	  particles.push_back(p);
 	}
 

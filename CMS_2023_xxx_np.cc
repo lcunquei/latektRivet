@@ -232,7 +232,7 @@ namespace Rivet {
 	     vector <PseudoJet> constitj1p = sorted_by_pt(j1p.constituents());
 
 	     for(uint k=0;k<constitj1p.size();k++){
-	       if(constitj1p[m].user_index()==4) flagsubjetp=1;
+	       if(constitj1p[k].user_index()==4) flagsubjetp=1;
 	     }
 
 	     if(flaghf==0) flagsubjetp=1;
